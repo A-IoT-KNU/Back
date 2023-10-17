@@ -1,39 +1,17 @@
 # Backend
 
-### Nota Bene
-
-This README file doesn't finished and will be updated during the development of the backend.
-
 ### Introduction
-
-Never
-
-gonna
-
-give
-
-you 
-
-up
 
 ### Quick Guide
 
-Never
+##### Requirements
 
-gonna
+Download and install Docker CLI and Docker Desktop
 
-let
+##### Getting started
 
-you
-
-down
+To run Keycloak, run `app.sh`:
+	
+	./app.sh
 
 ### Post Scriptum
-
-Never 
-gonna 
-run 
-around 
-and 
-desert 
-you
