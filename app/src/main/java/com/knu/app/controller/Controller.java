@@ -1,4 +1,4 @@
-package com.knu.app;
+package com.knu.app.controller;
 
 
 import org.springframework.security.access.prepost.PreAuthorize;
