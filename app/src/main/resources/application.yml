@@ -3,15 +3,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8890/realms/Test
+          issuer-uri: http://localhost:9001/realms/iot
           jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
 server:
-  port: 8091
+  port: 9002
 
 jwt:
   auth:
     converter:
-      resource-id: test-rest-api
+      resource-id: iot-rest-api
       principle-attribute: preffered_username
 
 
