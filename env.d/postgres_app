@@ -1,0 +1,4 @@
+# PostgreSQL
+POSTGRES_DB=iotdb
+POSTGRES_USER=iotuser
+POSTGRES_PASSWORD=iotpassword
