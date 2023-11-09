@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class IotBackendAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(IotBackendAppApplication.class, args);
+        SpringApplication.run(IotBackendAppApplication.class, args);
 	}
 
 }

@@ -26,9 +26,25 @@ services:
     networks:
       - keycloak_dev_network
 
+  postgres_app:
+    image: postgres:14
+    env_file: env.d/postgres_app
+    command: postgres -c 'max_connections=200'
+    volumes:
+      - pgdata_app:/var/lib/postgresql/appdata
+    healthcheck:
+        test: "exit 0"
+    ports:
+      - "10000:5432"
+    networks:
+      - app_dev_network
+
 volumes:
   pgdata_keycloak:
+  pgdata_app:
 networks:
   keycloak_dev_network:
+    driver: bridge
+  app_dev_network:
     driver: bridge
             
