@@ -1,14 +1,20 @@
 package com.knu.app.controller;
 
-import com.knu.app.controller.dto.AuthTokenDto;
-import com.knu.app.controller.dto.ClientDto;
+import com.knu.app.controller.dto.ClientAuthTokenDto;
 import com.knu.app.controller.dto.ClientLoginDto;
 import com.knu.app.controller.dto.ClientRegisterDto;
 import com.knu.app.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.hc.core5.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,16 +22,19 @@ import reactor.core.publisher.Mono;
 public class ClientController {
 
     private final ClientService clientService;
-
-
     @PostMapping("/register")
-    Mono<AuthTokenDto> registerClient(@RequestBody ClientRegisterDto clientRegisterDto) {
+    ResponseEntity<Mono<?>> registerClient(@Valid @RequestBody ClientRegisterDto clientRegisterDto) {
         return clientService.registerClient(clientRegisterDto);
     }
     
     @PostMapping("/login")
-    Mono<AuthTokenDto> loginClient(@RequestBody ClientLoginDto clientLoginDto) {
+    ResponseEntity<Mono<?>> loginClient(@Valid @RequestBody ClientLoginDto clientLoginDto) {
         return clientService.loginClient(clientLoginDto);
+    }
+
+    @PostMapping("/logout")
+    ResponseEntity<Mono<?>> logoutClient(@Valid @RequestBody ClientAuthTokenDto clientAuthTokenDto) {
+        return clientService.logoutClient(clientAuthTokenDto);
     }
 
 //    @GetMapping("/{clientId}")

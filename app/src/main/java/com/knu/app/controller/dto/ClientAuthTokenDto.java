@@ -2,8 +2,7 @@ package com.knu.app.controller.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AuthTokenDto (
-
+public record ClientAuthTokenDto(
         @NotBlank(message = "Access token cannot be empty")
         String accessToken,
 
