@@ -31,13 +31,18 @@ public class KeycloakRequests {
     @Getter
     static private String iotClientSecret;
 
+    @Getter
+    static private String url;
+
     @Autowired
     private void setClientSecrets(
             @Value("${keycloak.admin.client.secret}") String newAdminClientSecret,
-            @Value("${keycloak.iot.client.secret}") String newIotClientSecret
+            @Value("${keycloak.iot.client.secret}") String newIotClientSecret,
+            @Value("${keycloak.url}") String newUrl
     ){
         adminClientSecret = newAdminClientSecret;
         iotClientSecret = newIotClientSecret;
+        url = newUrl;
     }
 
     static public String generateMasterAccessToken() {
@@ -45,7 +50,7 @@ public class KeycloakRequests {
         String accessToken = null;
 
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:9001/realms/master/protocol/openid-connect/token");
+            HttpPost httpPost = new HttpPost(url + "/realms/master/protocol/openid-connect/token");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
             String formData = "grant_type=client_credentials" +
                     "&client_id=admin-cli" +
@@ -88,7 +93,7 @@ public class KeycloakRequests {
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:9001/admin/realms/iot/users");
+            HttpPost httpPost = new HttpPost(url + "/admin/realms/iot/users");
             httpPost.setHeader("Authorization", "Bearer " + masterAccessToken);
             httpPost.setHeader("Content-Type", "application/json");
 
@@ -155,7 +160,7 @@ public class KeycloakRequests {
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:9001/realms/iot/protocol/openid-connect/token");
+            HttpPost httpPost = new HttpPost(url + "/realms/iot/protocol/openid-connect/token");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
             String formData = "grant_type=password" +
@@ -221,7 +226,7 @@ public class KeycloakRequests {
         CloseableHttpClient httpClient = HttpClients.createDefault();
 
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:9001/realms/iot/protocol/openid-connect/logout");
+            HttpPost httpPost = new HttpPost(url + "/realms/iot/protocol/openid-connect/logout");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
             String formData = "grant_type=password&" +
@@ -273,7 +278,7 @@ public class KeycloakRequests {
         String email = null;
 
         try {
-            HttpPost httpPost = new HttpPost("http://localhost:9001/realms/iot/protocol/openid-connect/token/introspect");
+            HttpPost httpPost = new HttpPost(url + "/realms/iot/protocol/openid-connect/token/introspect");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
             String formData = "grant_type=password" +
