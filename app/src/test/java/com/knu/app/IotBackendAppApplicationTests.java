@@ -56,7 +56,7 @@ class IotBackendAppApplicationTests {
     @Test
 	void testIntrospectClientToken() {
         var loginResponseEntity = KeycloakRequests.login(
-                new ClientLoginDto("test","TestTest1!")
+                new ClientLoginDto("diamond","ThisIsTestPassword1!")
         );
 
         assertEquals(loginResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));

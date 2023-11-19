@@ -146,6 +146,7 @@
       - `"Password cannot be empty"` (Status: 400 Bad Request)
      
       - `"Password is not valid"` (Status: 400 Bad Request)
+     
       - `"Invalid user credentials"` (Status: 400 Bad Request)
      
       - `"Internal server error"` (Status: 500 Internal Server Error)

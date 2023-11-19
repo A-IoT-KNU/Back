@@ -302,6 +302,8 @@ public class KeycloakRequests {
                         if (active) {
                             email = jsonNode.get("email").asText();
                         }
+
+                        System.out.println(email);
                     }
 
                 } else {
