@@ -1,8 +1,12 @@
 # Backend
 
+---
+
 ### Requirements
 
 Download and install [Docker Desktop](https://docs.docker.com/get-docker/).
+
+---
 
 ### Getting started
 
@@ -80,7 +84,7 @@ Download and install [Docker Desktop](https://docs.docker.com/get-docker/).
 
 20. Close Keycloak
 
-21. Stop container in Docker Desktop
+21. Stop and delete container in Docker Desktop and delete image `backend` (IMPORTANT!!!)
 
 22. In repository folder `env.d` open file `backend` and paste saved secret into `KEYCLOAK_ADMIN_CLIENT_SECRET` and `KEYCLOAK_IOT_CLIENT_SECRET`variables:
 
@@ -94,4 +98,6 @@ KEYCLOAK_IOT_CLIENT_SECRET=<YOUR_SAVED_IOT_CLIENT_SECRET>
 
 23. In root of repository run script `./build-container.sh` and wait for an inscription `Build finished`
 
-24. Now backend is must be ready for REST API REQUEST (for detail information about backend API, read [API-DOC](./API-DOC.md)
+---
+
+Now backend is must be ready for REST API REQUEST (for detail information about backend API, read [API-DOC](./API-DOC.md)
