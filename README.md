@@ -14,79 +14,87 @@ Download and install [Docker Desktop](https://docs.docker.com/get-docker/).
 
 2) In root of repository run script `./build-container.sh` and wait for an inscription `Build finished`
 
-3) Go to the Keycloak on `localhost:9001`:
+### Keycloak first setup
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-29-30-image.png)
+1) Go to the Keycloak on `localhost:9001`:
 
-4) Go to the section `Administration Console`:
+![](./back/images/step-1.png)
 
-5) Sign in with username `admin` and password `admin`:
+2) Go to the section `Administration Console`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-42-08-image.png)
+![](./back/images/step-2.png)
 
-6) Go to the section `Master` and press `Add realm` button:
+3) Sign in with username `admin` and password `admin`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-43-24-image.png)
+![](./back/images/step-3.png)
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-43-42-image.png)
+4) Go to the section `Master` and press `Add realm` button:
 
-7) Name realm `iot`, press `Select file` button, choose from repository folder `keycloak/realmdata` file `realm-iot.json` and press `Create` button:
+![](./back/images/step-4.png)
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-48-52-image.png)
+![](./back/images/step-5.png)
 
-8) Go to the section `Iot` and choose `Master` section:
+5) Name realm `iot`, press `Select file` button, choose from repository folder `keycloak/realmdata` file `realm-iot.json` and press `Create` button:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-50-34-image.png)
+![](./back/images/step-6.png)
 
-9) Go to the section `Clients`:
+6) Go to the section `Iot` and choose `Master` section:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-53-12-image.png)
+![](./back/images/step-7.png)
 
-10) Press on `admin-cli`:
+7) Go to the section `Clients`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-19-55-23-image.png)
+![](./back/images/step-8.png)
 
-11. Choose `Access Type` and change from `public` to `confidential`, turn on `Service Accounts Enabled` and press `Save` button below:
+8) Press on `admin-cli`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-00-21-image.png)
+![](./back/images/step-9.png)
 
-12) Press on `Service Account Roles`:
+9) Choose `Access Type` and change from `public` to `confidential`, turn on `Service Accounts Enabled` and press `Save` button below:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-12-27-image.png)
+![](./back/images/step-10.png)
 
-13) Choose `Client Roles` and select `iot-realm`:
+10) Press on `Service Account Roles`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-13-56-image.png)
+![](./back/images/step-11.png)
 
-14) In `Available Roles` choose `manage-users`, `query-users`, `view-users` and press `Add selected >>`:
+11) Choose `Client Roles` and select `iot-realm`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-16-37-image.png)
+![](./back/images/step-12.png)
 
-15) Press on `Credentials` and copy `Secret` value (or press `Regenerate Secret` button and then copy `Secret` value):
+12) In `Available Roles` choose `manage-users`, `query-users`, `view-users` and press `Add selected >>`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-18-01-image.png)
+![](./back/images/step-13.png)
 
-16. Go to the section `Master` and choose `Iot` section:
+13) Press on `Credentials` and copy `Secret` value (or press `Regenerate Secret` button and then copy `Secret` value):
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-22-04-image.png)
+![](./back/images/step-14.png)
 
-17. Go to the section `Clients`:
+14) Go to the section `Master` and choose `Iot` section:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-23-55-image.png)
+![](./back/images/step-15.png)
 
-18) Press on `iot-rest-api`:
+15) Go to the section `Clients`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-24-33-image.png)
+![](./back/images/step-16.png)
 
-19) Press on `Credentials` and copy `Secret` value (or press `Regenerate Secret` button and then copy `Secret` value):
+16) Press on `iot-rest-api`:
 
-![](/home/pavlokilko/.var/app/com.github.marktext.marktext/config/marktext/images/2023-11-19-20-31-48-image.png)
+![](./back/images/step-17.png)
 
-20. Close Keycloak
+17) Press on `Credentials` and copy `Secret` value (or press `Regenerate Secret` button and then copy `Secret` value):
 
-21. Stop and delete container in Docker Desktop and delete image `backend` (IMPORTANT!!!)
+![](./back/images/step-18.png)
 
-22. In repository folder `env.d` open file `backend` and paste saved secret into `KEYCLOAK_ADMIN_CLIENT_SECRET` and `KEYCLOAK_IOT_CLIENT_SECRET`variables:
+18) Close Keycloak
+
+19) Stop and delete container in Docker Desktop and delete image `backend` (IMPORTANT!!!)
+
+![](./back/images/step-19.png)
+
+![](./back/images/step-20.png)
+
+20) In repository folder `env.d` open file `backend` and paste saved secret into `KEYCLOAK_ADMIN_CLIENT_SECRET` and `KEYCLOAK_IOT_CLIENT_SECRET` variables:
 
 ```properties
 # SOME ENVIROMENT VARIABLES 
@@ -96,8 +104,8 @@ KEYCLOAK_ADMIN_CLIENT_SECRET=<YOUR_SAVED_ADMIN_CLIENT_SECRET>
 KEYCLOAK_IOT_CLIENT_SECRET=<YOUR_SAVED_IOT_CLIENT_SECRET>
 ```
 
-23. In root of repository run script `./build-container.sh` and wait for an inscription `Build finished`
+21) In root of repository run script `./build-container.sh` and wait for an inscription `Build finished`
 
 ---
 
-Now backend is must be ready for REST API REQUEST (for detail information about backend API, read [API-DOC](./API-DOC.md)
+Now backend is must be ready for REST API requests (for detail information about backend API, read [API-DOC](./API-DOC.md)
