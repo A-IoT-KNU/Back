@@ -652,7 +652,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "p5G4R7VbZcAD3ggL0QkSLcpsDcyLsXfR",
       "redirectUris": [
         "http://localhost:9002/*"
       ],

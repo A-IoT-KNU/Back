@@ -1,77 +1,69 @@
 package com.knu.app;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.knu.app.request.KeycloakRequests;
+import com.knu.app.controller.dto.ClientAuthTokenDto;
+import com.knu.app.controller.dto.ClientLoginDto;
+import com.knu.app.controller.dto.ClientRegisterDto;
+import com.knu.app.util.KeycloakRequests;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatusCode;
 
-import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class IotBackendAppApplicationTests {
-	@Test
-	void testGetMasterAccessToken() {
-        String accessToken = KeycloakRequests.generateMasterAccessToken();
 
-        if (accessToken != null) {
-            System.out.println("Access Token: " + accessToken);
-        } else {
-            System.out.println("Error");
-        }
+    @Test
+	void testKeycloakIsAccessibleMasterAccessToken() {
+        assertNotNull(KeycloakRequests.generateMasterAccessToken());
 	}
 
     @Test
-    void testRegisterClient() {
-        String token = KeycloakRequests.generateMasterAccessToken();
+    void testKeycloakRegisterClient() {
+        String masterAccessToken = KeycloakRequests.generateMasterAccessToken();
 
-        if (token != null) {
-            String firstName = "AAA";
-            String lastName = "AAA";
-            String username = "AAA";
-            String email = "aaa@gmail.com";
-            String password = "aaa";
+        assertNotNull(masterAccessToken);
 
-            Boolean success = KeycloakRequests.register(token, firstName, lastName, username, email, password);
+        String firstName = "Test";
+        String lastName = "Test";
+        String username = "test";
+        String email = "test@gmail.com";
+        String password = "TestTest1!";
 
-            if (success) {
-                System.out.println("Client registered Successfully");
-            } else {
-                System.out.println("Error");
-            }
-        }
+        var registerResponseEntity= KeycloakRequests.register(
+                masterAccessToken,
+                new ClientRegisterDto(firstName, lastName, email, username, password)
+        );
+
+        assertEquals(registerResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
     }
 
     @Test
-	void testGetClientToken() {
-        ArrayList<String> tokens = (ArrayList<String>) KeycloakRequests.login("qwerty", "qwertyuiop");
+	void testKeycloakLoginClient() {
+        var loginResponseEntity = KeycloakRequests.login(
+                new ClientLoginDto("test","TestTest1!")
+        );
 
-        if (tokens != null) {
-            System.out.println("Access Token: " + tokens.get(0));
-            System.out.println("Refresh Token: " + tokens.get(1));
-        }
+        assertEquals(loginResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
 	}
 
     @Test
 	void testIntrospectClientToken() {
-        ArrayList<String> tokens = (ArrayList<String>) KeycloakRequests.login("qwerty", "qwertyuiop");
+        var loginResponseEntity = KeycloakRequests.login(
+                new ClientLoginDto("diamond","ThisIsTestPassword1!")
+        );
 
-        if (tokens != null) {
-            String email = KeycloakRequests.getEmail(tokens.get(0));
+        assertEquals(loginResponseEntity.getStatusCode(), HttpStatusCode.valueOf(200));
 
-            if (email != null) {
-                System.out.println("Email: " + email);
-            } else {
-                System.out.println("Error");
-            }
-        }
+        String email = KeycloakRequests.getEmail(((ClientAuthTokenDto) loginResponseEntity.getBody()).accessToken());
+
+        assertNotNull(email);
 	}
 
     // return 204

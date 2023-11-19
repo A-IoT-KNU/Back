@@ -1,17 +1,20 @@
 package com.knu.app.service.impl;
 
-import com.knu.app.controller.dto.AuthTokenDto;
+import com.knu.app.controller.dto.ClientAuthTokenDto;
 import com.knu.app.controller.dto.ClientLoginDto;
 import com.knu.app.controller.dto.ClientRegisterDto;
-import com.knu.app.repository.entity.ClientEntity;
+import com.knu.app.controller.dto.ErrorDto;
 import com.knu.app.repository.ClientRepository;
-import com.knu.app.request.KeycloakRequests;
+import com.knu.app.repository.entity.ClientEntity;
 import com.knu.app.service.ClientService;
+import com.knu.app.util.KeycloakRequests;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
@@ -20,53 +23,59 @@ public class ClientServiceImpl implements ClientService {
     private final ClientRepository clientRepository;
 
     @Override
-    public Mono<AuthTokenDto> registerClient(ClientRegisterDto clientRegisterDto) {
+    public ResponseEntity<Mono<?>> registerClient(ClientRegisterDto clientRegisterDto) {
         String accessToken = KeycloakRequests.generateMasterAccessToken();
 
         if (accessToken != null) {
-             Boolean success = KeycloakRequests.register(
+             var registerResponseEntity = KeycloakRequests.register(
                      accessToken,
-                     clientRegisterDto.firstName(),
-                     clientRegisterDto.lastName(),
-                     clientRegisterDto.username(),
-                     clientRegisterDto.email(),
-                     clientRegisterDto.password()
+                     clientRegisterDto
              );
 
-             if (success) {
-                 ArrayList<String> tokens = (ArrayList<String>) KeycloakRequests.login(
-                         clientRegisterDto.username(),
-                         clientRegisterDto.password()
+             if (registerResponseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
+                 var loginResponseEntity = KeycloakRequests.login(
+                         new ClientLoginDto(clientRegisterDto.username(), clientRegisterDto.password())
                  );
 
-                 return clientRepository.save(ClientEntity.builder()
-                                 .email(clientRegisterDto.email())
-                                 .build())
-                         .map(
-                            clientEntity ->
-                                    new AuthTokenDto(tokens.get(0), tokens.get(1))
-                         );
+                 return new ResponseEntity<>(
+                         clientRepository.save(
+                                 ClientEntity.builder()
+                                         .email(clientRegisterDto.email())
+                                         .build()
+                         ).mapNotNull(clientEntity -> (ClientAuthTokenDto) loginResponseEntity.getBody()),
+                         HttpStatusCode.valueOf(200)
+                 );
+             } else {
+                 return (ResponseEntity<Mono<?>>) registerResponseEntity;
              }
         }
 
-        return Mono.empty();
+        return new ResponseEntity<>(
+                    Mono.just(new ErrorDto(Collections.singletonList("Internal server error"))),
+                    HttpStatusCode.valueOf(500)
+        );
     }
 
     @Override
-    public Mono<AuthTokenDto> loginClient(ClientLoginDto clientLoginDto) {
-        ArrayList<String> tokens = (ArrayList<String>) KeycloakRequests.login(
-                clientLoginDto.username(),
-                clientLoginDto.password()
-        );
+    public ResponseEntity<Mono<?>> loginClient(ClientLoginDto clientLoginDto) {
+       var loginResponseEntity = KeycloakRequests.login(clientLoginDto);
 
-        if (tokens != null) {
-            return Mono.just(new AuthTokenDto(tokens.get(0), tokens.get(1)));
+        if (loginResponseEntity.getStatusCode() == HttpStatusCode.valueOf(200)) {
+            return new ResponseEntity<>(
+                    Mono.just( (ClientAuthTokenDto) loginResponseEntity.getBody()),
+                    HttpStatusCode.valueOf(200)
+            );
+        } else {
+            return (ResponseEntity<Mono<?>>) loginResponseEntity;
         }
-
-        return Mono.empty();
     }
 
-//    @Override
+    @Override
+    public ResponseEntity<Mono<?>> logoutClient(ClientAuthTokenDto clientAuthTokenDto) {
+        return (ResponseEntity<Mono<?>>) KeycloakRequests.logout(clientAuthTokenDto.refreshToken());
+    }
+
+    //    @Override
 //    public Mono<ClientDto> getClient(Integer clientId) {
 //        return clientRepository.findById(clientId)
 //                .map(clientEntity -> new ClientDto(clientEntity.getId(), clientEntity.getEmail()));

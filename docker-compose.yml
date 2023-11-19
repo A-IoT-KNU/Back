@@ -5,13 +5,16 @@ services:
     image: "quay.io/keycloak/keycloak:17.0"
     env_file: env.d/keycloak
     command: start-dev
+    healthcheck:
+        test: "exit 0"
     ports:
       - "9001:8080"
     depends_on:
       postgres_keycloak:
         condition: service_healthy
     networks:
-      - keycloak_dev_network
+      - keycloak_postgres_network
+      - keycloak_backend_network
              
   postgres_keycloak:
     image: postgres:14
@@ -24,27 +27,46 @@ services:
     ports:
       - "9000:5432"
     networks:
-      - keycloak_dev_network
+      - keycloak_postgres_network
 
-  postgres_app:
+  postgres_backend:
     image: postgres:14
-    env_file: env.d/postgres_app
+    env_file: env.d/postgres_backend
     command: postgres -c 'max_connections=200'
     volumes:
-      - pgdata_app:/var/lib/postgresql/appdata
+      - pgdata_backend:/var/lib/postgresql/data
     healthcheck:
         test: "exit 0"
     ports:
       - "10000:5432"
     networks:
-      - app_dev_network
+      - backend_postgres_network
+
+  backend:
+    image: backend:latest
+    env_file: env.d/backend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:4444"
+    depends_on:
+        postgres_backend:
+            condition: service_healthy
+        keycloak:
+            condition: service_healthy
+    networks:
+      - backend_postgres_network
+      - keycloak_backend_network
 
 volumes:
   pgdata_keycloak:
-  pgdata_app:
+  pgdata_backend:
 networks:
-  keycloak_dev_network:
+  keycloak_postgres_network:
     driver: bridge
-  app_dev_network:
+  backend_postgres_network:
+    driver: bridge
+  keycloak_backend_network:
     driver: bridge
             

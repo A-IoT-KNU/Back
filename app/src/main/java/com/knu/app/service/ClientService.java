@@ -1,18 +1,17 @@
 package com.knu.app.service;
 
-import com.knu.app.controller.dto.AuthTokenDto;
-import com.knu.app.controller.dto.ClientDto;
+import com.knu.app.controller.dto.ClientAuthTokenDto;
 import com.knu.app.controller.dto.ClientLoginDto;
 import com.knu.app.controller.dto.ClientRegisterDto;
-import reactor.core.publisher.Flux;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-
 public interface ClientService {
-    Mono<AuthTokenDto> registerClient(ClientRegisterDto clientRegisterDto);
+    ResponseEntity<Mono<?>> registerClient(ClientRegisterDto clientRegisterDto);
 
-    Mono<AuthTokenDto> loginClient(ClientLoginDto clientLoginDto);
+    ResponseEntity<Mono<?>> loginClient(ClientLoginDto clientLoginDto);
+
+    ResponseEntity<Mono<?>> logoutClient(ClientAuthTokenDto clientAuthTokenDto);
 
 //    Mono<ClientDto> getClient(Integer clientId);
 //
