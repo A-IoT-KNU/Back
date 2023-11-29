@@ -1,6 +1,6 @@
 package com.knu.app.exceptions;
 
-import com.knu.app.controller.dto.ErrorDto;
+import com.knu.app.dto.ErrorDto;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,8 +1,8 @@
 package com.knu.app;
 
-import com.knu.app.controller.dto.ClientAuthTokenDto;
-import com.knu.app.controller.dto.ClientLoginDto;
-import com.knu.app.controller.dto.ClientRegisterDto;
+import com.knu.app.dto.ClientAuthTokenDto;
+import com.knu.app.dto.ClientLoginDto;
+import com.knu.app.dto.ClientRegisterDto;
 import com.knu.app.util.KeycloakRequests;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;

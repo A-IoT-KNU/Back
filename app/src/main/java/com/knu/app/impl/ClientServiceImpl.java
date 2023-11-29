@@ -1,11 +1,11 @@
-package com.knu.app.service.impl;
+package com.knu.app.impl;
 
-import com.knu.app.controller.dto.ClientAuthTokenDto;
-import com.knu.app.controller.dto.ClientLoginDto;
-import com.knu.app.controller.dto.ClientRegisterDto;
-import com.knu.app.controller.dto.ErrorDto;
+import com.knu.app.dto.ClientAuthTokenDto;
+import com.knu.app.dto.ClientLoginDto;
+import com.knu.app.dto.ClientRegisterDto;
+import com.knu.app.dto.ErrorDto;
 import com.knu.app.repository.ClientRepository;
-import com.knu.app.repository.entity.ClientEntity;
+import com.knu.app.entity.ClientEntity;
 import com.knu.app.service.ClientService;
 import com.knu.app.util.KeycloakRequests;
 import lombok.RequiredArgsConstructor;

@@ -2,10 +2,10 @@ package com.knu.app.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.knu.app.controller.dto.ClientAuthTokenDto;
-import com.knu.app.controller.dto.ClientLoginDto;
-import com.knu.app.controller.dto.ClientRegisterDto;
-import com.knu.app.controller.dto.ErrorDto;
+import com.knu.app.dto.ClientAuthTokenDto;
+import com.knu.app.dto.ClientLoginDto;
+import com.knu.app.dto.ClientRegisterDto;
+import com.knu.app.dto.ErrorDto;
 import lombok.Getter;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;

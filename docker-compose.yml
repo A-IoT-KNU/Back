@@ -59,6 +59,16 @@ services:
       - backend_postgres_network
       - keycloak_backend_network
 
+  rabbitmq:
+    image: rabbitmq:3.9.7-management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - backend_postgres_network
+      - keycloak_backend_network
+
+
 volumes:
   pgdata_keycloak:
   pgdata_backend:

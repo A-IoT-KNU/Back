@@ -1,4 +1,4 @@
-package com.knu.app.controller.dto;
+package com.knu.app.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
