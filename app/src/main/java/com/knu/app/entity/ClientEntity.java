@@ -1,4 +1,4 @@
-package com.knu.app.repository.entity;
+package com.knu.app.entity;
 
 import lombok.Builder;
 import lombok.Getter;
