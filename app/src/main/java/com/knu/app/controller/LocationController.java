@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/location")
+@CrossOrigin(origins = "https://localhost:4200/")
 public class LocationController {
 
     private final LocationService locationService;
