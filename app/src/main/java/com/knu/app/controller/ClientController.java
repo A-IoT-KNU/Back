@@ -1,24 +1,19 @@
 package com.knu.app.controller;
 
-import com.knu.app.controller.dto.ClientAuthTokenDto;
-import com.knu.app.controller.dto.ClientLoginDto;
-import com.knu.app.controller.dto.ClientRegisterDto;
+import com.knu.app.dto.client.ClientAuthTokenDto;
+import com.knu.app.dto.client.ClientLoginDto;
+import com.knu.app.dto.client.ClientRegisterDto;
 import com.knu.app.service.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.hc.core5.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/client")
+@CrossOrigin(origins = "https://localhost:4200/")
 public class ClientController {
 
     private final ClientService clientService;

@@ -194,3 +194,165 @@
       - `"Invalid refresh token"` (Status: 400 Bad Request)
      
       - `"Internal server error"` (Status: 500 Internal Server Error)    
+
+---
+4) `HTTP POST {}/location/create`: return result of location creation
+- **JSON Fields Requirements**:
+  
+   - `token`:
+
+   	  - `accessToken`: not empty, must be valid JWT
+     
+      - `refreshToken`: not empty, must be valid JWT
+     
+   - `name`: not empty
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+  	"token": {
+  		"accessToken": "eyJhbGciOiJSUzI1NiIs...",
+ 		"refreshToken": "eyJhbGciOiJIUzI1NiIs..."	
+  	},
+  	"name": "Location1"
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+      ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+
+      - `"Location name cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
+---
+5) `HTTP GET {}/location/list`: return list of locations
+- **JSON Fields Requirements**:
+  
+   - `accessToken`: not empty, must be valid JWT
+     
+   - `refreshToken`: not empty, must be valid JWT
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+  	"accessToken": "eyJhbGciOiJSUzI1NiIs...",
+ 	"refreshToken": "eyJhbGciOiJIUzI1NiIs..."		
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  [
+      {
+          "id": 1,
+          "name": "123"
+      },
+      {
+          "id": 2,
+          "name": "adsf"
+      },
+      {
+          "id": 3,
+          "name": "asdfff"
+      }
+  ]
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+    ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
+---
+6) `HTTP DELETE {}/location/edit`: return list of locations
+- **JSON Fields Requirements**:
+
+   - `token`:
+  
+      - `accessToken`: not empty, must be valid JWT
+     
+      - `refreshToken`: not empty, must be valid JWT
+
+   - `id`: not null, greater than zero
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+      "token": {
+          "accessToken": "eyJhbGciOiJSUzI1NiIs...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIs..."	
+      },
+      "id": "3"
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+      ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+
+      - `"Location id cannot be empty"` (Status: 400 Bad Request)
+
+      - `"Location id must be greater than zero"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)

@@ -1,11 +1,11 @@
 package com.knu.app.service.impl;
 
-import com.knu.app.controller.dto.ClientAuthTokenDto;
-import com.knu.app.controller.dto.ClientLoginDto;
-import com.knu.app.controller.dto.ClientRegisterDto;
-import com.knu.app.controller.dto.ErrorDto;
+import com.knu.app.dto.client.ClientAuthTokenDto;
+import com.knu.app.dto.client.ClientLoginDto;
+import com.knu.app.dto.client.ClientRegisterDto;
+import com.knu.app.dto.error.ErrorDto;
 import com.knu.app.repository.ClientRepository;
-import com.knu.app.repository.entity.ClientEntity;
+import com.knu.app.entity.Client;
 import com.knu.app.service.ClientService;
 import com.knu.app.util.KeycloakRequests;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 @RequiredArgsConstructor
@@ -39,10 +40,10 @@ public class ClientServiceImpl implements ClientService {
 
                  return new ResponseEntity<>(
                          clientRepository.save(
-                                 ClientEntity.builder()
+                                 Client.builder()
                                          .email(clientRegisterDto.email())
                                          .build()
-                         ).mapNotNull(clientEntity -> (ClientAuthTokenDto) loginResponseEntity.getBody()),
+                         ).mapNotNull(client -> (ClientAuthTokenDto) loginResponseEntity.getBody()),
                          HttpStatusCode.valueOf(200)
                  );
              } else {
@@ -75,10 +76,10 @@ public class ClientServiceImpl implements ClientService {
         return (ResponseEntity<Mono<?>>) KeycloakRequests.logout(clientAuthTokenDto.refreshToken());
     }
 
-    //    @Override
+//        @Override
 //    public Mono<ClientDto> getClient(Integer clientId) {
-//        return clientRepository.findById(clientId)
-//                .map(clientEntity -> new ClientDto(clientEntity.getId(), clientEntity.getEmail()));
+////        return clientRepository.findById(clientId)
+////                .map(clientEntity -> new ClientDto(clientEntity.getId(), clientEntity.getEmail()));
 //    }
 //
 //    @Override
