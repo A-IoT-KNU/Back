@@ -24,7 +24,7 @@ public class LocationController {
         return locationService.createLocation(createLocationDto);
     }
 
-    @GetMapping("/list")
+    @PostMapping("/list")
     ResponseEntity<?> getLocationList(@Valid @RequestBody ClientAuthTokenDto tokenDto) {
         return locationService.getLocationList(tokenDto);
     }

@@ -43,7 +43,7 @@ services:
       - backend_postgres_network
 
   backend:
-    image: backend:0.2.0
+    image: backend:0.3.0
     env_file: env.d/backend
     build:
       context: .
