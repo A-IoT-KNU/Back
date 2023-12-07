@@ -15,4 +15,7 @@ public interface LocationRepository extends R2dbcRepository<Location, Integer> {
 
     @Query("delete from location where id=$1")
     Mono<Object> deleteLocationById(Integer id);
+
+    @Query("select exists(select 1 from location where id=$1)")
+    Mono<Boolean> existsLocationById(Integer id);
 }

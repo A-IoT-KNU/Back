@@ -9,6 +9,7 @@ import com.knu.app.dto.location.LocationDto;
 import com.knu.app.entity.Location;
 import com.knu.app.repository.ClientRepository;
 import com.knu.app.repository.LocationRepository;
+import com.knu.app.repository.RoomRepository;
 import com.knu.app.service.LocationService;
 import com.knu.app.util.KeycloakRequests;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class LocationServiceImpl implements LocationService {
 
     private final ClientRepository clientRepository;
     private final LocationRepository locationRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     public ResponseEntity<Mono<?>> createLocation(CreateLocationDto createLocationDto) {
@@ -95,7 +97,8 @@ public class LocationServiceImpl implements LocationService {
 
         if (clientEmail != null) {
             return new ResponseEntity<>(
-                    locationRepository.deleteLocationById(deleteLocationDto.id()),
+                    roomRepository.deleteRoomsByLocationId(deleteLocationDto.id())
+                            .then(locationRepository.deleteLocationById(deleteLocationDto.id())),
                     HttpStatusCode.valueOf(200)
             );
         } else {

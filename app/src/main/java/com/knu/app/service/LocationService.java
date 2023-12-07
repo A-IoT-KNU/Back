@@ -9,8 +9,6 @@ import reactor.core.publisher.Mono;
 
 public interface LocationService {
 
-//    ResponseEntity<Mono<?>> showTestLocation(ClientAuthTokenDto tokenDto);
-
     ResponseEntity<Mono<?>> createLocation(CreateLocationDto createLocationDto);
 
     ResponseEntity<?> getLocationList(ClientAuthTokenDto tokenDto);
