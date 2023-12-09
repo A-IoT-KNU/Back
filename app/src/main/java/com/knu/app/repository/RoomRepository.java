@@ -8,6 +8,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public interface RoomRepository extends R2dbcRepository<Room, Integer> {
+
     @Query("select id, name from room where location_id=$1")
     Flux<Room> findAllByLocationId(Integer locationId);
 
@@ -19,4 +20,7 @@ public interface RoomRepository extends R2dbcRepository<Room, Integer> {
 
     @Query("delete from room where location_id=$1")
     Mono<Object> deleteRoomsByLocationId(Integer locationId);
+
+    @Query("select exists(select 1 from location where id=$1)")
+    Mono<Boolean> existsRoomById(Integer id);
 }
