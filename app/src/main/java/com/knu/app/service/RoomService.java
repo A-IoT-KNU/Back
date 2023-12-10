@@ -14,6 +14,6 @@ public interface RoomService {
     Mono<ResponseEntity<?>> getRoomList(GetRoomListDto getRoomListDto);
 
     ResponseEntity<Mono<?>> editRoom(EditRoomDto editRoomDto);
-//
+
     ResponseEntity<Mono<?>> deleteRoom(DeleteRoomDto deleteRoomDto);
 }

@@ -1,8 +1,9 @@
 package com.knu.app.controller;
 
-import com.knu.app.dto.location.CreateLocationDto;
 import com.knu.app.dto.sensor.CreateSensorDto;
-import com.knu.app.service.RoomService;
+import com.knu.app.dto.sensor.DeleteSensorDto;
+import com.knu.app.dto.sensor.EditSensorDto;
+import com.knu.app.dto.sensor.GetSensorListDto;
 import com.knu.app.service.SensorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,5 +24,19 @@ public class SensorController {
         return sensorService.createSensor(createSensorDto);
     }
 
+    @PostMapping("/list")
+    Mono<ResponseEntity<?>> getLocationList(@Valid @RequestBody GetSensorListDto getSensorListDto) {
+        return sensorService.getSensorList(getSensorListDto);
+    }
+
+    @PutMapping("/edit")
+    ResponseEntity<?> editLocation(@Valid @RequestBody EditSensorDto editSensorDto) {
+        return sensorService.editSensor(editSensorDto);
+    }
+
+    @DeleteMapping("/delete")
+    ResponseEntity<?> deleteLocation(@Valid @RequestBody DeleteSensorDto deleteSensorDto) {
+        return sensorService.deleteSensor(deleteSensorDto);
+    }
 
 }

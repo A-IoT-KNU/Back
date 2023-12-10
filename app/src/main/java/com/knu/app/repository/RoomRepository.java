@@ -1,6 +1,5 @@
 package com.knu.app.repository;
 
-import com.knu.app.entity.Location;
 import com.knu.app.entity.Room;
 import org.springframework.data.r2dbc.repository.Query;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
