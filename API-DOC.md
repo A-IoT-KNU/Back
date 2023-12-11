@@ -675,3 +675,238 @@
       - `"Invalid token"` (Status: 400 Bad Request)
      
       - Other (Status: 500 Internal Server Error)
+
+
+---
+
+### Sensor
+
+---
+
+4) `HTTP POST {}/sensor/create`: return result of creating sensor
+- **JSON Fields Requirements**:
+  
+   - `token`:
+     
+      - `accessToken`: not empty, must be valid JWT
+      - `refreshToken`: not empty, must be valid JWT`
+  
+   - `sensorName`: not empty
+   - `sensorTypes`: not empty
+   - `roomId`: not empty
+   - `locationId`: not empty
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+      "token": {
+          "accessToken": "eyJhbGciOiJSUzI1NiIs...",
+         "refreshToken": "eyJhbGciOiJIUzI1NiIs..."    
+      },
+    "sensorName": "Room1",
+    "sensorTypes": "AirPolution",
+    "roomId": "1",
+    "locationId": "1"
+
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+      ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Location name cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
+---
+
+5) `HTTP POST {}/sensor/list`: return list of sensors
+- **JSON Fields Requirements**:
+  
+   - `accessToken`: not empty, must be valid JWT
+  
+   - `refreshToken`: not empty, must be valid JWT
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+      "accessToken": "eyJhbGciOiJSUzI1NiIs...",
+     "refreshToken": "eyJhbGciOiJIUzI1NiIs..."        
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  [
+      {
+          "id": 1,
+          "name": "12"
+      },
+      {
+          "id": 2,
+          "name": "abc"
+      },
+      {
+          "id": 3,
+          "name": "cba"
+      }
+  ]
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+    ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
+---
+
+6. `HTTP POST {}/sensor/edit`: return list of sensors
+- **JSON Fields Requirements**:
+  
+   - `token`:
+     
+      - `accessToken`: not empty, must be valid JWT
+     
+      - `refreshToken`: not empty, must be valid JWT
+  
+   - `sensor`:
+     
+      - `id`: not null, greater than zero
+     
+      - `name`: not empty
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+      "token": {
+          "accessToken": "eyJhbGciOiJSUzI1NiIs...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIs..."    
+      },
+      "location": {
+          "id": "3",
+          "name": "333"
+      }        
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+    ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
+---
+
+7. `HTTP DELETE {}/sensor/delete`: return result of deleting sensors
+- **JSON Fields Requirements**:
+  
+   - `token`:
+     
+      - `accessToken`: not empty, must be valid JWT
+     
+      - `refreshToken`: not empty, must be valid JWT
+  
+   - `id`: not null, greater than zero
+
+- **JSON Request Example**:
+  
+  ```json
+  {
+      "token": {
+          "accessToken": "eyJhbGciOiJSUzI1NiIs...",
+          "refreshToken": "eyJhbGciOiJIUzI1NiIs..."    
+      },
+      "id": "3"
+  }
+  ```
+
+- **Json Response Example (Status: 200 OK)**:
+  
+  ```json
+  
+  ```
+
+- **Json Response Example (Status: 400 Bad Request)**:
+  
+  ```json
+  {
+    "errors": [
+        "Invalid token"    
+      ]      
+  }
+  ```
+  
+   - All types of error messages:
+     
+      - `"Access token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Refresh token cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Location id cannot be empty"` (Status: 400 Bad Request)
+     
+      - `"Location id must be greater than zero"` (Status: 400 Bad Request)
+     
+      - `"Invalid token"` (Status: 400 Bad Request)
+     
+      - Other (Status: 500 Internal Server Error)
+
