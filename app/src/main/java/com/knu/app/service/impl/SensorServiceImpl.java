@@ -1,12 +1,15 @@
 package com.knu.app.service.impl;
 
 import com.knu.app.dto.error.ErrorDto;
-import com.knu.app.dto.room.*;
-import com.knu.app.entity.Room;
+import com.knu.app.dto.sensor.CreateSensorDto;
+import com.knu.app.dto.sensor.DeleteSensorDto;
+import com.knu.app.dto.sensor.EditSensorDto;
+import com.knu.app.dto.sensor.GetSensorListDto;
+import com.knu.app.entity.Sensor;
 import com.knu.app.repository.ClientRepository;
-import com.knu.app.repository.LocationRepository;
 import com.knu.app.repository.RoomRepository;
-import com.knu.app.service.RoomService;
+import com.knu.app.repository.SensorRepository;
+import com.knu.app.service.SensorService;
 import com.knu.app.util.KeycloakRequests;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatusCode;
@@ -18,28 +21,30 @@ import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
-public class RoomServiceImpl implements RoomService {
+public class SensorServiceImpl implements SensorService {
 
-    private final RoomRepository roomRepository;
-    private final LocationRepository locationRepository;
     private final ClientRepository clientRepository;
+    private final RoomRepository roomRepository;
+    private final SensorRepository sensorRepository;
 
     @Override
-    public Mono<ResponseEntity<Mono<?>>> createRoom(CreateRoomDto createRoomDto) {
-        String clientEmail = KeycloakRequests.getEmail(createRoomDto.token().accessToken());
+    public Mono<ResponseEntity<Mono<?>>> createSensor(CreateSensorDto createSensorDto) {
+        String clientEmail = KeycloakRequests.getEmail(createSensorDto.token().accessToken());
 
         if (clientEmail != null) {
-            return locationRepository.existsLocationById(createRoomDto.locationId())
-                    .flatMap( exists -> {
+            return roomRepository.existsRoomById(createSensorDto.roomId())
+                    .flatMap(exists -> {
                         if (exists) {
                             return Mono.just(new ResponseEntity<>(
                                     clientRepository.findByEmail(clientEmail)
-                                            .flatMap(client -> roomRepository.save(
-                                                    Room.builder()
-                                                            .locationId(createRoomDto.locationId())
-                                                            .name(createRoomDto.name())
-                                                            .build()
-                                                    ).flatMap(room -> Mono.empty())
+                                            .flatMap(client -> sensorRepository.save(
+                                                            Sensor.builder()
+                                                                    .roomId(createSensorDto.roomId())
+                                                                    .sensorName(createSensorDto.sensorName())
+                                                                    .sensorTypes(createSensorDto.sensorTypes())
+                                                                    .locationId(createSensorDto.locationId())
+                                                                    .build()
+                                                    ).flatMap(sensor -> Mono.empty())
                                             ),
                                     HttpStatusCode.valueOf(200)
                             ));
@@ -47,7 +52,7 @@ public class RoomServiceImpl implements RoomService {
                             return Mono.just(new ResponseEntity<>(
                                     Mono.just(
                                             new ErrorDto(
-                                                    Collections.singletonList("Location does not exist")
+                                                    Collections.singletonList("Room does not exist")
                                             )
                                     ),
                                     HttpStatusCode.valueOf(400)
@@ -63,23 +68,22 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Mono<ResponseEntity<?>> getRoomList(GetRoomListDto getRoomListDto) {
-        String clientEmail = KeycloakRequests.getEmail(getRoomListDto.token().accessToken());
+    public Mono<ResponseEntity<?>> getSensorList(GetSensorListDto getSensorListDto) {
+        String clientEmail = KeycloakRequests.getEmail(getSensorListDto.token().accessToken());
 
         if (clientEmail != null) {
-            return locationRepository.existsLocationById(getRoomListDto.locationId())
-                    .flatMap( exists -> {
+            return roomRepository.existsRoomById(getSensorListDto.roomId())
+                    .flatMap(exists -> {
                         if (exists) {
                             return Mono.just(new ResponseEntity<>(
-                                    roomRepository.findAllByLocationId(getRoomListDto.locationId())
-                                            .map(room -> new RoomDto(room.getId(), room.getName())),
+                                    sensorRepository.findAllByRoomId(getSensorListDto.roomId()),
                                     HttpStatusCode.valueOf(200)
                             ));
                         } else {
                             return Mono.just(new ResponseEntity<>(
                                     Mono.just(
                                             new ErrorDto(
-                                                    Collections.singletonList("Location does not exist")
+                                                    Collections.singletonList("Room does not exist")
                                             )
                                     ),
                                     HttpStatusCode.valueOf(400)
@@ -95,14 +99,14 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public ResponseEntity<Mono<?>> editRoom(EditRoomDto editRoomDto) {
-        String clientEmail = KeycloakRequests.getEmail(editRoomDto.token().accessToken());
+    public ResponseEntity<Mono<?>> editSensor(EditSensorDto editSensorDto) {
+        String clientEmail = KeycloakRequests.getEmail(editSensorDto.token().accessToken());
 
         if (clientEmail != null) {
             return new ResponseEntity<>(
-                    roomRepository.updateRoomById(
-                            editRoomDto.room().id(),
-                            editRoomDto.room().name()
+                    sensorRepository.updateSensorById(
+                            editSensorDto.sensor().id(),
+                            editSensorDto.sensor().name()
                     ),
                     HttpStatusCode.valueOf(200)
             );
@@ -115,12 +119,12 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public ResponseEntity<Mono<?>> deleteRoom(DeleteRoomDto deleteRoomDto) {
-        String clientEmail = KeycloakRequests.getEmail(deleteRoomDto.token().accessToken());
+    public ResponseEntity<Mono<?>> deleteSensor(DeleteSensorDto deleteSensorDto) {
+        String clientEmail = KeycloakRequests.getEmail(deleteSensorDto.token().accessToken());
 
         if (clientEmail != null) {
             return new ResponseEntity<>(
-                    roomRepository.deleteRoomById(deleteRoomDto.id()),
+                    sensorRepository.deleteSensorById(deleteSensorDto.id()),
                     HttpStatusCode.valueOf(200)
             );
         } else {
