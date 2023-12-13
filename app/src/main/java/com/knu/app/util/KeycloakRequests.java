@@ -3,6 +3,7 @@ package com.knu.app.util;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.knu.app.dto.client.ClientAuthTokenDto;
+import com.knu.app.dto.client.ClientDetailsDto;
 import com.knu.app.dto.client.ClientLoginDto;
 import com.knu.app.dto.client.ClientRegisterDto;
 import com.knu.app.dto.error.ErrorDto;
@@ -319,5 +320,57 @@ public class KeycloakRequests {
         }
 
         return email;
+    }
+
+    static public ClientDetailsDto getDetails (String accessToken) {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        ClientDetailsDto details = null;
+
+        try {
+            HttpPost httpPost = new HttpPost(url + "/realms/iot/protocol/openid-connect/token/introspect");
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            String formData = "grant_type=password" +
+                    "&client_id=iot-rest-api" +
+                    "&client_secret=" + iotClientSecret +
+                    "&token=" + accessToken;
+
+            HttpEntity entity = new StringEntity(formData);
+            httpPost.setEntity(entity);
+
+            try (CloseableHttpResponse response = httpClient.execute(httpPost)) {
+                if (response.getCode() == 200) {
+                    HttpEntity responseEntity = response.getEntity();
+
+                    if (responseEntity != null) {
+                        String responseContent = EntityUtils.toString(responseEntity);
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        JsonNode jsonNode = objectMapper.readTree(responseContent);
+                        Boolean active = jsonNode.get("active").asBoolean();
+
+                        if (active) {
+                            details = new ClientDetailsDto(
+                                    jsonNode.get("preferred_username").asText(),
+                                    jsonNode.get("username").asText(),
+                                    jsonNode.get("email").asText()
+                            );
+                        }
+                    }
+
+                } else {
+                    System.err.println("HTTP Request failed with status code: " + response.getCode());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                httpClient.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return details;
     }
 }

@@ -32,6 +32,10 @@ public class ClientController {
         return clientService.logoutClient(clientAuthTokenDto);
     }
 
+    @PostMapping("/details")
+    ResponseEntity<Mono<?>> getClientDetails(@Valid @RequestBody ClientAuthTokenDto clientAuthTokenDto) {
+        return clientService.getClientDetails(clientAuthTokenDto);
+    }
 //    @GetMapping("/{clientId}")
 //    Mono<ClientDto> getClient(@PathVariable("clientId") Integer clientId) {
 //        return clientService.getClient(clientId);

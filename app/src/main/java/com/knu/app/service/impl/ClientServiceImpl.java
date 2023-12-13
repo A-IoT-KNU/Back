@@ -76,7 +76,24 @@ public class ClientServiceImpl implements ClientService {
         return (ResponseEntity<Mono<?>>) KeycloakRequests.logout(clientAuthTokenDto.refreshToken());
     }
 
-//        @Override
+    @Override
+    public ResponseEntity<Mono<?>> getClientDetails(ClientAuthTokenDto clientAuthTokenDto) {
+        var details = KeycloakRequests.getDetails(clientAuthTokenDto.accessToken());
+
+        if (details != null) {
+            return new ResponseEntity<>(
+                    Mono.just(details),
+                    HttpStatusCode.valueOf(200)
+            );
+        } else {
+            return new ResponseEntity<>(
+            Mono.just(new ErrorDto(Collections.singletonList("Invalid token"))),
+                    HttpStatusCode.valueOf(400)
+            );
+        }
+    }
+
+    //        @Override
 //    public Mono<ClientDto> getClient(Integer clientId) {
 ////        return clientRepository.findById(clientId)
 ////                .map(clientEntity -> new ClientDto(clientEntity.getId(), clientEntity.getEmail()));
