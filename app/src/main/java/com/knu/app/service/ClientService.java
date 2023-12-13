@@ -13,6 +13,8 @@ public interface ClientService {
 
     ResponseEntity<Mono<?>> logoutClient(ClientAuthTokenDto clientAuthTokenDto);
 
+    ResponseEntity<Mono<?>> getClientDetails(ClientAuthTokenDto clientAuthTokenDto);
+
 //    Mono<ClientDto> getClient(Integer clientId);
 //
 //    Mono<ClientDto> updateClient(Integer clientId, ClientDto clientDto);
