@@ -822,7 +822,7 @@
           "accessToken": "eyJhbGciOiJSUzI1NiIs...",
           "refreshToken": "eyJhbGciOiJIUzI1NiIs..."    
       },
-      "location": {
+      "sensor": {
           "id": "3",
           "name": "333"
       }        
